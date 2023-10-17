@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     // 状态的 socket
     int ret = bind(sock, (struct sockaddr *)&address, sizeof(address));
 
-    assert(ret != 1);
+    assert(ret != -1);
 
     // socket 被命名之后,还不能马上接受客户连接,我们需要利用 listen
     // 系统调用来创建一个监听队列以存放待处理的客户连接 int listen(int sockfd,
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     // 服务器将不受理新的客户连接
     ret = listen(sock, backlog);
 
-    assert(ret != 1);
+    assert(ret != -1);
 
     // 循环等待连接,直到有 SINTERM 信号将它中断
 
