@@ -45,8 +45,6 @@ int main(int argc, char *argv[]) {
         // 发送数据
 
         send(sockfd, normal_data, strlen(normal_data), 0); // 默认
-        send(sockfd, normal_data1, strlen(normal_data1), 0); // 默认
-        send(sockfd, normal_data2, strlen(normal_data2), 0); // 默认
         send(sockfd, oob_data, strlen(oob_data), MSG_OOB); // 带外数据
         send(sockfd, normal_data, strlen(normal_data), 0); // 再次发送正常数据
     }
