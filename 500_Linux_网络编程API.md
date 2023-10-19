@@ -190,6 +190,41 @@ int getpeername(int sockfd, struct sockaddr *addrname, socklen_t * address_len);
 
 ## socket 选项
 
+fcntl（File Control）是UNIX和Linux操作系统提供的系统调用之一，它用于执行对文件描述符的控制操作。文件描述符可以是文件、套接字、管道等I/O资源。
+
+下面两个方法是专门用来读取和设置socket 文件描述符的方法:
+
+```c
+int getsockopt(int sockfd, int level, int option_name, void *option_value, socklen_t *restrict option_len);
+
+int setsockopt(int sockfd, int level, int option_name, const void*option_value,socketlen_t option_len);
+```
+
+## SO_REUSEADDR 选项
+
+```c
+int sock=socket(PF_INET,SOCK STREAM,0);
+assert(sock>=0);
+int reuse=1;
+setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&reuse,sizeof(reuse));
+struct sockaddr_in address;
+bzero( &address,sizeof(address));
+address.sin_family=AF_INET;
+inet_pton(AF_INET,ip,&address.sin_addr);
+address.sin_port=htons(port);
+int ret=bind(sock,(struct sockaddr*)&address,sizeof(address));
+```
+
+setsockopt 之后,就可以立即重用处于 TIME_WAIT 状态的端口.
+
+## SO_RCVBUF, SO_SNDBUF 选项
+
+这两个字段可以直接设置接收以及发送缓冲区的大小.
+
+
+
+
+
 
 
 
