@@ -221,9 +221,67 @@ setsockopt 之后,就可以立即重用处于 TIME_WAIT 状态的端口.
 
 这两个字段可以直接设置接收以及发送缓冲区的大小.
 
+## SO_RCVLOWAT 和 SO_SNDLOWAT 选项
+
+这是 TCP 接收缓冲区和发送缓冲区的低水位标记.一般被 IO 复用系统调用用来判断 socket 是否可读或者可写.
+
+一般 TCP 的默认值都设为 1 字节.
+
+## SO_LINGER 选项
+
+这个选项用来控制 close 系统调用在关闭 TCP 连接时候的行为.
+
+默认情况下,当我们使用 close 系统调用来关闭一个 socket 时,close 将立即返回,TCP 模块负责把该 socket 对应的 TCP 发送缓冲区中残留的数据发送给对方.
+
+## 网络信息 API
+
+为了更加方便的编程,我们用主机名和服务名来代替 ip以及端口.
+
+## gethostbyname, gethostbyaddr
+
+返回值为:struct hostent,
+
+```c
+
+	struct hostent
+	{
+		char *h_name;         //正式主机名
+		char **h_aliases;     //主机别名
+		int h_addrtype;       //主机IP地址类型：IPV4-AF_INET
+		int h_length;		  //主机IP地址字节长度，对于IPv4是四字节，即32位
+		char **h_addr_list;	  //主机的IP地址列表
+    }
+```
+
+## getservbyname, getservbyport
+
+返回值为:struct servent
+
+```c
+struct servent {
+    char  *s_name;
+    char **s_aliases;
+    int    s_port;
+    char  *s_proto;
+};
+```
+## getaddrinfo
+
+```c
+#include <netdb.h>
+
+int getaddrinfo(const char* hostname, const char* service,const struct addinfo* hints, struct addrinfo** result);
+```
+
+其中hostname可以是主机名后者地址串(Ipv4点分十进制数串或者Ipv6十六进制数串);service参数是一个服务名或者十进制端口号数串。与getaddrinfo相关的系统配置文件包括/etc/hosts、/etc/services,用于处理主机名与地址串、服务名与端口号之间的转换。
 
 
-
+## getnameinfo
+这个函数与getaddrinfo互补，它以一个套接口地址为参数，返回一个描述主机的字符串和一个描述服务的字符串。其函数原型如下：
+```c
+#include <netdb.h>
+int getnameinfo(const struct sockaddr *sockaddr, socklen_t addrlen, char *host, size_t hostlen, char *serv, size_t servlen, int flags);
+```
 
 
 

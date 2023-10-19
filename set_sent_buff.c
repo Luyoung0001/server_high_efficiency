@@ -9,7 +9,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 1024*4
 
 int main(int argc, char *argv[]) {
     if (argc < 3) {
