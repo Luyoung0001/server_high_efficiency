@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     assert(sock >= 0);
     // recv buff size 设置
     int recvbuf = atoi(argv[3]);
-    int len = sizefo(recvbuf);
+    int len = sizeof(recvbuf);
 
      // 设置缓冲区大小
     setsockopt(sock, SOL_SOCKET, SO_RCVBUF, &recvbuf, sizeof(recvbuf)); // 设置
