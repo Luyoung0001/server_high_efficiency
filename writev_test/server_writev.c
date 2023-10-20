@@ -94,12 +94,16 @@ int main(int argc, char *argv[]) {
         }
         // 如果目标文件有效,则发送正常的 HTTP 应答
         if (valid) {
-            // 将HTTP 的状态行,"Content_Length"头部字段和一个空行一次加入 header_buf中
-            ret = snprintf(header_buf,BUFFER_SIZE-1,"%s%s\r\n","HTTP/1.1",status_line[0]);
+            // 将HTTP 的状态行,"Content_Length"头部字段和一个空行一次加入
+            // header_buf中
+            ret = snprintf(header_buf, BUFFER_SIZE - 1, "%s%s\r\n", "HTTP/1.1",
+                           status_line[0]);
             len += ret;
-            ret = snprintf(header_buf+len,BUFFER_SIZE-1-len,"Content_Length:%d\r\n",file_stat.st_size);
-            len+=ret;
-            ret = snprintf(header_buf+len,BUFFER_SIZE-1-len,"%s","\r\n");
+            ret = snprintf(header_buf + len, BUFFER_SIZE - 1 - len,
+                           "Content_Length:%d\r\n", file_stat.st_size);
+            len += ret;
+            ret =
+                snprintf(header_buf + len, BUFFER_SIZE - 1 - len, "%s", "\r\n");
             // 利用 writev 将header_buf和 file_buf一块儿写出
             struct iovec iv[2];
 
@@ -109,13 +113,14 @@ int main(int argc, char *argv[]) {
             iv[1].iov_base = file_buf;
             iv[1].iov_len = file_stat.st_size;
 
-            ret = writev(connfd,iv,2);
-        }else{
+            ret = writev(connfd, iv, 2);
+        } else {
             // 如果目标文件无效,则通知服务器内部发生了错误
-            ret = snprintf(header_buf,BUFFER_SIZE-1,"%s%s\r\n","HTTP/1.1",status_line[1]);
-            len+=ret;
-            ret = snprintf(header_buf,BUFFER_SIZE-1-len,"%s","\r\n");
-            send(connfd,header_buf,strlen(header_buf),0);
+            ret = snprintf(header_buf, BUFFER_SIZE - 1, "%s%s\r\n", "HTTP/1.1",
+                           status_line[1]);
+            len += ret;
+            ret = snprintf(header_buf+len, BUFFER_SIZE - 1 - len, "%s", "\r\n");
+            send(connfd, header_buf, strlen(header_buf), 0);
         }
         close(connfd);
         free(file_buf);

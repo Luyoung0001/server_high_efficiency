@@ -12,7 +12,7 @@
 #define BUFF_SIZE 1024
 
 int main(int argc, char *argv[]) {
-    if (argc <= 3) {
+    if (argc < 3) {
         printf("usage:%s ipaddress port_num\n", argv[0]);
         return 1;
     }
